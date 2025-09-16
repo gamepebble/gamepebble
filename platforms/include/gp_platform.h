@@ -29,6 +29,7 @@
 #include <stdint.h>
 
 void gp_platform_init(void);
+void gp_platform_process(void);
 
 void gp_platform_gfx_write(int x, int y, int width, int height, const uint8_t* bitmap);
 void gp_platform_gfx_update(void);

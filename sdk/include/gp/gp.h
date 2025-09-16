@@ -40,7 +40,6 @@
 #define GP_BUTTON_R1 (1 << 9)
 #define GP_BUTTON_L2 (1 << 10)
 #define GP_BUTTON_R2 (1 << 11)
-#define GP_BUTTON_MENU (1 << 12)
 
 typedef struct {
     int x;
@@ -66,6 +65,7 @@ typedef struct {
 } gp_capabilities_t;
 
 void gp_init(void);
+void gp_process(void);
 const gp_capabilities_t* gp_get_capabilities(void);
 
 void gp_gfx_clear(uint16_t color);
@@ -78,7 +78,7 @@ void gp_gfx_draw_line(int x0, int y0, int x1, int y1, uint16_t color);
 void gp_gfx_draw_sprite(int x, int y, int width, int height, const uint8_t* bitmap);
 void gp_gfx_update(void);
 
-void gp_sys_delay(int ms);
+void gp_sys_delay(uint32_t ms);
 uint32_t gp_sys_millis(void);
 uint32_t gp_sys_random(void);
 

@@ -25,5 +25,19 @@
 
 int main(void) {
     gp_init();
+
+    while (1) {
+        gp_process();
+        gp_sys_delay(100);
+        uint32_t buttons = gp_input_get_buttons();
+        if (buttons & GP_BUTTON_SELECT) {
+            break;
+        }
+        gp_gfx_draw_line(0, 0, 127, 63, 1);
+        gp_gfx_draw_rect(10, 10, 50, 30, 1);
+        gp_gfx_fill_rect(20, 20, 30, 10, 1);
+        gp_gfx_draw_circle(64, 32, 15, 1);
+        gp_gfx_update();
+    }
     return 0;
 }

@@ -22,26 +22,78 @@
  * SOFTWARE.
  */
 #include "gp_platform.h"
+#include <SDL2/SDL.h>
 #include <stdint.h>
 #include <stdio.h>
 
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define SCREEN_SCALE 4
+
+static SDL_Window* window = NULL;
+static SDL_Renderer* renderer = NULL;
+static char buffer[SCREEN_WIDTH * SCREEN_HEIGHT] = {0};
+
 void gp_platform_init(void) {
     printf("Initializing platform-specific resources...\n");
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
+        exit(1);
+    }
+    window = SDL_CreateWindow("GamePebble", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH * SCREEN_SCALE,
+                              SCREEN_HEIGHT * SCREEN_SCALE, SDL_WINDOW_SHOWN);
+    if (!window) {
+        fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(1);
+    }
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        exit(1);
+    }
+}
+
+void gp_platform_process(void) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            exit(0);
+        } else if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                exit(0);
+            }
+        }
+    }
 }
 
 void gp_platform_gfx_write(int x, int y, int width, int height, const uint8_t* bitmap) {
-    printf("Writing graphics to (%d, %d) [%d x %d]\n", x, y, width, height);
+    for (int xi = 0; xi < width; xi++) {
+        for (int yj = 0; yj < height; yj++) {
+            buffer[(y + yj) * 128 + (x + xi)] = bitmap[xi * height + yj];
+        }
+    }
 }
 
 void gp_platform_gfx_update(void) {
-    printf("Updating graphics display...\n");
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    for (int i = 0; i < SCREEN_WIDTH * SCREEN_SCALE; i++) {
+        for (int j = 0; j < SCREEN_HEIGHT * SCREEN_SCALE; j++) {
+            uint8_t color = buffer[(j / SCREEN_SCALE) * SCREEN_WIDTH + (i / SCREEN_SCALE)] ? 255 : 0;
+            SDL_SetRenderDrawColor(renderer, color, color, color, 255);
+            SDL_RenderDrawPoint(renderer, i, j);
+        }
+    }
+    SDL_RenderPresent(renderer);
 }
 
 void gp_platform_delay(uint32_t ms) {
-    printf("Delaying for %d milliseconds...\n", ms);
+    SDL_Delay(ms);
 }
 
 uint32_t gp_platform_millis(void) {
-    printf("Getting current milliseconds since initialization...\n");
-    return 0;
+    return SDL_GetTicks();
 }

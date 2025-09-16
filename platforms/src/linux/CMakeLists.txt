@@ -23,3 +23,5 @@
 target_sources(${PROJECT_NAME} PRIVATE
     gp_platform.c
 )
+
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread SDL2)

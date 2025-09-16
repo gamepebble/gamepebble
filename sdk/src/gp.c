@@ -27,3 +27,20 @@
 void gp_init(void) {
     gp_platform_init();
 }
+
+void gp_process(void) {
+    gp_platform_process();
+}
+
+void gp_sys_delay(uint32_t ms) {
+    gp_platform_delay(ms);
+}
+uint32_t gp_sys_millis(void) {
+    return gp_platform_millis();
+}
+uint32_t gp_sys_random(void) {
+    return 0;
+}
+uint32_t gp_input_get_buttons(void) {
+    return 0;
+}
