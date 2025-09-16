@@ -20,20 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-cmake_minimum_required(VERSION 4.1)
-
-project(
-     gamepebble 
-    DESCRIPTION "Pocket-sized retro console you can code for in C"
-    LANGUAGES C
-    VERSION 0.0.1)
-
-add_library(gamepebble STATIC)
-
-add_subdirectory(sdk)
-add_subdirectory(platforms)
-
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME )
-    message(STATUS "Configuring ${PROJECT_NAME} example projects")
-    add_subdirectory(examples)
-endif()
+target_sources(${PROJECT_NAME} PRIVATE
+    gp_platform.c
+)

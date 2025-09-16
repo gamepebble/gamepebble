@@ -21,9 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "gp/gp.h"
+#include "gp_platform.h"
+#include <stdint.h>
+#include <stdio.h>
 
-int main(void) {
-    gp_init();
+void gp_platform_init(void) {
+    printf("Initializing platform-specific resources...\n");
+}
+
+void gp_platform_gfx_write(int x, int y, int width, int height, const uint8_t* bitmap) {
+    printf("Writing graphics to (%d, %d) [%d x %d]\n", x, y, width, height);
+}
+
+void gp_platform_gfx_update(void) {
+    printf("Updating graphics display...\n");
+}
+
+void gp_platform_delay(uint32_t ms) {
+    printf("Delaying for %d milliseconds...\n", ms);
+}
+
+uint32_t gp_platform_millis(void) {
+    printf("Getting current milliseconds since initialization...\n");
     return 0;
 }

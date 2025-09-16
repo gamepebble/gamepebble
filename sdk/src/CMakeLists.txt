@@ -22,4 +22,5 @@
 #
 target_sources(${PROJECT_NAME} PRIVATE
     gp.c
+    gp_gfx.c
 )

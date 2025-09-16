@@ -21,9 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "gp/gp.h"
+#ifndef GP_PLATFORM_H
+#define GP_PLATFORM_H
 
-int main(void) {
-    gp_init();
-    return 0;
-}
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+void gp_platform_init(void);
+
+void gp_platform_gfx_write(int x, int y, int width, int height, const uint8_t* bitmap);
+void gp_platform_gfx_update(void);
+
+void gp_platform_delay(uint32_t ms);
+uint32_t gp_platform_millis(void);
+
+#endif  // GP_PLATFORM_H

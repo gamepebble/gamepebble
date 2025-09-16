@@ -21,3 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "gp/gp.h"
+#include "gp_platform.h"
+
+void gp_init(void) {
+    gp_platform_init();
+}
